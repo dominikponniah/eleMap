@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">evMap</string>
+    <string name="title_activity_main">evMap</string>
+    <string name="package_name">ch.dominikponniah.evmap</string>
+    <string name="custom_url_scheme">ch.dominikponniah.evmap</string>
+</resources>
