@@ -1,0 +1,7 @@
+{
+  "name": "evMap",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
