@@ -1,6 +1,8 @@
 iframe {
-    height: calc(100vh - 60px);
+    height: calc(100vh - 10px);
     width: 100vw;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
 }
 
 label {
@@ -10,4 +12,51 @@ label {
 
 span {
     margin-left: 10px;
+}
+
+.detailsPopup {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    background-color: #121212;
+    text-align: center;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    ion-icon {
+        color: #ffd534;
+        font-size: 20px;
+        margin-top: 2px;
+    }
+    .closeIcon {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 25px;
+        color: white;
+    }
+    .reportItem {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        font-size: 25px;
+        color: white;
+    }
+    .aboutItem {
+        position: absolute;
+        left: 35px;
+        top: 9px;
+        font-size: 27px;
+        color: white;
+    }
+}
+
+.controlWrapper {
+    margin-top: -10px;
+    text-align: center;
+    .smallCard {
+        width: 45%;
+        text-align: center;
+    }
 }

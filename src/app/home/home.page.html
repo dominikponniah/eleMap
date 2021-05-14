@@ -1,18 +1,129 @@
-<ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-title>
-            Blank
-        </ion-title>
-    </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-    <h3>Feature Detection</h3>
-    <label>Layer Name: </label><span id="name"></span>
-    <br/>
-    <label>Feature Name/ID: </label><span id="placemark"></span>
-    <br/>
+
     <iframe id="iframe" [src]="frameLink" frameborder='0'></iframe>
 
+    <div class="detailsPopup">
 
+        <ion-spinner *ngIf="isLoading"></ion-spinner>
+
+        <ion-icon class="reportItem" name="alert-circle-outline" (click)="showReportPopover()"></ion-icon>
+        <ion-icon class="aboutItem" name="help-circle-outline" (click)="showAboutPopover()"></ion-icon>
+        <ion-icon class="closeIcon" *ngIf="openDetailsPopover || openAboutPopover || openReportPopover" name="close-circle-outline" (click)="closePopover()"></ion-icon>
+
+        <h5 *ngIf="!openDetailsPopover && !openAboutPopover && !openReportPopover">Wähle eine Ladestation aus</h5>
+
+        <div class="aboutContainer" *ngIf="openReportPopover">
+            <h3>Fehler melden</h3>
+            <ion-card *ngIf="stationDetails !== undefined">
+                <ion-card-content>
+                    Hast Du fehlerhafte Informationen gefunden oder stimmen Daten zu einer Ladestation nicht? Dann melde dies dem Bundesamt für Energie.
+                    <br />
+                    <br />
+                    <ion-button mode="ios" color="tertiary" (click)="reportProblemBFE()" expand="block">Fehler dem BFE melden
+                    </ion-button>
+
+                    <b style="color: red">Wichtig! Melde dem BFE nur fehler, welche die Daten oder die Karte betreffen. Fehler und
+            Anregungen zu evMap kannst Du über den gelben Button unten mitteilen!</b>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-content>
+                    Fehler in evMap gefunden? Ein Bug möglicherweise oder nur eine Anregung? Dann tippe auf den Button unten um mit dem Entwickler in Kontakt zu treten.
+                    <br />
+                    <br />
+                    <ion-button mode="ios" color="warning" (click)="reportProblemDEV()" expand="block">Entwickler kontaktieren
+                    </ion-button>
+
+                </ion-card-content>
+            </ion-card>
+        </div>
+
+        <div class="aboutContainer" *ngIf="openAboutPopover">
+            <h3>Über evMap</h3>
+
+            <ion-chip color="secondary">
+                <ion-label color="success">Aktuelle Version: <b>1.1</b></ion-label>
+            </ion-chip>
+            <ion-chip color="secondary">
+                <ion-label color="warn">Letztes App-Update: <b>14.05.2021</b></ion-label>
+            </ion-chip>
+
+            <ion-card>
+                <ion-card-content>
+                    Entwickelt von Dominik Ponniah
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-content>
+                    Die Kartendaten sowie Stations-Informationen werden fortlaufend automatisch aktualisiert.
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-content>
+                    Informationen zu Ladestationen stammen vom <a href="https://opendata.swiss/dataset/ladestationen-fuer-elektroautos/" target="_blank">Bundesamt für
+            Energie</a> unter freier Lizensierung im Rahmen von OpenData.
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-content>
+                    Änderungen vorbehalten! Es wird keine Haftung für die dargestellten Daten übernommen!
+                </ion-card-content>
+            </ion-card>
+        </div>
+
+        <div class="detailsContainer" *ngIf="openDetailsPopover">
+            <h3>{{stationDetails['attributes'].OperatorName }}</h3>
+
+            <ion-chip color="danger" *ngIf="stationDetails['attributes'].Availability == 'Occupied'">
+                <ion-label color="danger">Momentan besetzt</ion-label>
+            </ion-chip>
+
+            <ion-chip color="secondary" *ngIf="stationDetails['attributes'].Availability == 'Available'">
+                <ion-label color="success">Verfügbar</ion-label>
+            </ion-chip>
+
+            <ion-chip color="secondary" *ngIf="stationDetails['attributes'].Availability == null">
+                <ion-label color="warning">Status unbekannt</ion-label>
+            </ion-chip>
+
+            <ion-chip color="secondary" *ngIf="stationDetails['attributes'].Availability == 'OutOfService'">
+                <ion-label color="warn">Ausser Betrieb</ion-label>
+            </ion-chip>
+
+            <ion-chip color="secondary" *ngIf="stationDetails == undefined">
+                <ion-label color="warn">Wird geladen...</ion-label>
+            </ion-chip>
+
+            <ion-card>
+                <ion-card-content (click)="navigate()">
+                    <ion-icon name="location-outline"></ion-icon>
+                    {{ stationDetails['attributes'].Street}}, {{ stationDetails['attributes'].PostalCode}} {{ stationDetails['attributes'].City}}
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-content>
+                    <ion-icon name="flash-outline"></ion-icon>
+                    {{ stationDetails['attributes'].Plugs}}
+                </ion-card-content>
+            </ion-card>
+
+            <div class="controlWrapper">
+                <ion-card class="smallCard" style="float: left;" (click)="callHotline()">
+                    <ion-card-content>
+                        <ion-icon name="call-outline"></ion-icon>
+                    </ion-card-content>
+                </ion-card>
+                <ion-card class="smallCard" style="float: right;" (click)="openHomepage()">
+                    <ion-card-content>
+                        <ion-icon name="globe-outline"></ion-icon>
+                    </ion-card-content>
+                </ion-card>
+            </div>
+        </div>
+    </div>
 </ion-content>

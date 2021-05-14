@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -7,10 +8,18 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
+  openAboutPopover = false;
+  openDetailsPopover = false;
+  openReportPopover = false;
+
+  isLoading = false;
 
   frameLink: SafeResourceUrl;
 
+  stationDetails: any[] = undefined;
+
   constructor(
+    private httpClient: HttpClient,
     private sanitizer: DomSanitizer
   ) {}
 
@@ -20,25 +29,85 @@ export class HomePage implements OnInit {
   }
 
   registerEventListener() {
-    window.addEventListener('message', (e) => {
-      if( e.data.type == 'gaFeatureSelection') {
-        document.getElementById('name').innerHTML = e.data.payload['layerId'];
-        document.getElementById('placemark').innerHTML = e.data.payload['featureId'];
-      }
-    }, false);
+    window.addEventListener(
+      'message',
+      (e) => {
+        if (e.data.type == 'gaFeatureSelection') {
+          this.isLoading = true;
+          this.httpClient
+            .get(
+              'https://api3.geo.admin.ch/rest/services/all/MapServer/find?layer=ch.bfe.ladestellen-elektromobilitaet&searchText=' +
+                e.data.payload['featureId'] +
+                '&searchField=ChargingStationId&returnGeometry=false'
+            )
+            .subscribe((data) => {
+              this.isLoading = false;
+              this.stationDetails = data['results'][0];
+              console.log(this.stationDetails);
+            });
+
+          this.openAboutPopover = false;
+          this.openReportPopover = false;
+          this.openDetailsPopover = true;
+        }
+      },
+      false
+    );
   }
 
   collectMapData() {
-    var latitude;
-    var longitude;
-    var baseMap = 'ch.swisstipo.pixelkarte-grau';
+    var generatedLink =
+      'https://map.geo.admin.ch/embed.html?lang=de&topic=ech&layers=ch.bfe.ladestellen-elektromobilitaet&layers_opacity=1&layers_visibility=true&geolocation=true&notooltip=true&bgLayer=ch.swisstopo.pixelkarte-farbe&zoom=8';
+    this.frameLink =
+      this.sanitizer.bypassSecurityTrustResourceUrl(generatedLink);
+  }
 
+  reportProblemBFE() {
+    window.open(
+      'https://www.uvek-gis.admin.ch/BFE/diemo/feedback/?stationids=' +
+        this.stationDetails['attributes'].ChargingStationId
+    );
+  }
 
-        var generatedLink = "https://map.geo.admin.ch/embed.html?lang=de&topic=ech&layers=ch.swisstopo.zeitreihen,ch.bfs.gebaeude_wohnungs_register,ch.bav.haltestellen-oev,ch.swisstopo.swisstlm3d-wanderwege,ch.astra.wanderland-sperrungen_umleitungen,ch.bfe.ladestellen-elektromobilitaet&layers_opacity=1,1,1,0.8,0.8,1&layers_visibility=false,false,false,false,false,true&layers_timestamp=18641231,,,,,&geolocation=true&notooltip=true&bgLayer=ch.swisstopo.pixelkarte-farbe&E=2598188.11&N=1195268.19&zoom=8&swisssearch=46.9,7.0";
+  reportProblemDEV() {
+    window.open(
+      'mailto:evmap@ponniah.ch?subject=Feedback%20evMap&body=Gib%20hier%20deine%20Nachricht%20ein.%20Ich%20werde%20mich%20bald%20bei%20dir%20melden.%20Bis%20dann!'
+    );
+  }
 
-        this.frameLink = this.sanitizer.bypassSecurityTrustResourceUrl(generatedLink);
+  navigate() {
+    window.open(
+      'http://maps.apple.com/?daddr=' +
+        this.stationDetails['attributes'].Latitude +
+        ',' +
+        this.stationDetails['attributes'].Longitude +
+        '&dirflg=d&t=h    '
+    );
+  }
 
+  callHotline() {
+    window.open('tel:' + this.stationDetails['attributes'].HotlinePhoneNumber);
+  }
 
+  openHomepage() {
+    window.open(this.stationDetails['attributes'].ProviderURL);
+  }
 
-}
+  showReportPopover() {
+    this.openAboutPopover = false;
+    this.openDetailsPopover = false;
+    this.openReportPopover = true;
+  }
+
+  showAboutPopover() {
+    this.openAboutPopover = true;
+    this.openDetailsPopover = false;
+    this.openReportPopover = false;
+  }
+  closePopover() {
+    this.openDetailsPopover = false;
+    this.openAboutPopover = false;
+    this.openReportPopover = false;
+    this.stationDetails = undefined;
+  }
 }
