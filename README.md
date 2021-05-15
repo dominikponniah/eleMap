@@ -5,12 +5,19 @@ evMap is a simple web-based app with the goal to use OpenData in a useful way. U
 
 
 ## Features
-
 - 2D and 3D Map provided by Maps of Switzerland
 - Station-Details including Availability, Provider, Navigation (using Google or Apple Maps) and Contact-Details from the Provider
 - Live-Map-Data provided by Federal Office of Energy and the Station-Providers
 - Report-Feature to report problems directly to the developer or the BFE.
 - Easy and intuitive User-Interface built for just one thumb.
+
+## Known Issues
+- Geolocation not working at the moment
+  - The used Federal Map Service should locate the user automatically but there are currently problems by getting this result.
+  - We're working on it.
+- Necessary Informations
+  - It is not 100% clear, what data is useful and what not. Therefore evMap just contains some (hopefully) useful data for a beta release.
+  
 
 ## Copyright and Licensing
 The source code may be reused under the following conditions: The source specification of the individual components as well as the data sources is obligatory. Commercial use of the data of the Swiss Federal Office of Energy is only permitted with its approval. The further development or adaptation of the app source code is only permitted with the permission of the developer.
