@@ -1,8 +1,6 @@
 iframe {
     height: calc(100vh - 10px);
     width: 100vw;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
 }
 
 label {
@@ -56,7 +54,23 @@ span {
     margin-top: -10px;
     text-align: center;
     .smallCard {
-        width: 45%;
+        width: 42vw;
         text-align: center;
     }
+}
+
+ion-card {
+    background-color: #121212;
+}
+
+ion-content {
+    background-color: #121212;
+}
+
+.cardTitle,
+.aboutContainer,
+.reportContainer,
+.detailsContainer {
+    margin-top: 50px;
+    margin-bottom: 15px;
 }

@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" style="background-color: #121212;">
 
     <iframe id="iframe" [src]="frameLink" frameborder='0'></iframe>
 
@@ -10,9 +10,9 @@
         <ion-icon class="aboutItem" name="help-circle-outline" (click)="showAboutPopover()"></ion-icon>
         <ion-icon class="closeIcon" *ngIf="openDetailsPopover || openAboutPopover || openReportPopover" name="close-circle-outline" (click)="closePopover()"></ion-icon>
 
-        <h5 *ngIf="!openDetailsPopover && !openAboutPopover && !openReportPopover">Wähle eine Ladestation aus</h5>
+        <h5 class="cardTitle" *ngIf="!openDetailsPopover && !openAboutPopover && !openReportPopover">Wähle eine Ladestation aus</h5>
 
-        <div class="aboutContainer" *ngIf="openReportPopover">
+        <div class="reportContainer" *ngIf="openReportPopover">
             <h3>Fehler melden</h3>
             <ion-card *ngIf="stationDetails !== undefined">
                 <ion-card-content>
