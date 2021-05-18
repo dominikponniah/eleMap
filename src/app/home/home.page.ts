@@ -57,7 +57,7 @@ export class HomePage implements OnInit {
 
   collectMapData() {
     var generatedLink =
-      'https://map.geo.admin.ch/embed.html?lang=de&topic=ech&layers=ch.bfe.ladestellen-elektromobilitaet&layers_opacity=1&layers_visibility=true&geolocation=true&notooltip=true&bgLayer=ch.swisstopo.pixelkarte-farbe&zoom=8';
+      'https://map.geo.admin.ch/embed.html?lang=de&geolocation=true&mobile=true&topic=ech&layers=ch.bfe.ladestellen-elektromobilitaet&layers_opacity=1&layers_visibility=true&notooltip=true&bgLayer=ch.swisstopo.pixelkarte-farbe&zoom=8';
     this.frameLink =
       this.sanitizer.bypassSecurityTrustResourceUrl(generatedLink);
   }
