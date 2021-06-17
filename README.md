@@ -1,4 +1,4 @@
-# evMap
+# eleMap
 ## _Switzerlands easy car-charging map_
 
 evMap is a simple web-based app with the goal to use OpenData in a useful way. Using the live map of the Swiss Confederation (Map of Switzerland) and the information it contains on electric charging stations for EVs (electronic vehicles), evMap can display an overview including the current station status. Via the intuitive and clean interface it is possible to display information about the location as well as the operator or the plug(s). The information comes from the OpenData catalog of the Swiss Federal Office of Energy.
